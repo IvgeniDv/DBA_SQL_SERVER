@@ -1,0 +1,16 @@
+SELECT
+ ss.[Name] [Schema], 
+ OBJECT_NAME(ddips.OBJECT_ID) [Table_name], 
+ ISNULL(si.[Name],'') [Index_name],
+ si.Index_id,
+ si.[Type_desc],
+ ISNULL(ddips.avg_fragmentation_in_percent,0) [Ext_fragmentation], 
+ ddips.page_count [Pages],
+ si.Fill_factor,
+ ISNULL(ddips.avg_page_space_used_in_percent,0) [Page_fullness_pct]
+FROM [sys].dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'LIMITED') ddips /*DETAILED offers more, but burns the CPU more*/ JOIN [sys].indexes si ON ddips.index_id = si.index_id AND ddips.OBJECT_ID = si.OBJECT_ID
+ JOIN [sys].tables st ON ddips.OBJECT_ID = st.OBJECT_ID
+ JOIN [sys].schemas ss ON st.SCHEMA_ID = ss.SCHEMA_ID
+WHERE ddips.index_level = 0 AND si.index_id > 0 AND st.[Type] = N'U' /* leaf level, non-heaps, user defined */GROUP BY ss.[Name], ddips.OBJECT_ID, si.[Name], si.index_id, si.type_desc, avg_fragmentation_in_percent, ddips.page_count, 
+avg_page_space_used_in_percent,si.fill_factor
+ORDER BY ddips.page_count DESC;

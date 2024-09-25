@@ -1,0 +1,13 @@
+DECLARE @threshold INT;
+SET @threshold = 5;
+SELECT 
+   [Table] = s.[Name] + N'.' + t.[Name] 
+FROM [sys].tables t
+   INNER JOIN [sys].schemas s ON t.[schema_id] = s.[schema_id]
+WHERE EXISTS
+(
+   SELECT 1 FROM [sys].indexes i
+   WHERE i.[object_id] = t.[object_id]
+   GROUP BY i.[object_id]
+   HAVING COUNT(*) > @threshold
+);

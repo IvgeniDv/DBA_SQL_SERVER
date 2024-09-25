@@ -1,0 +1,7 @@
+SELECT  s.[name] + N'.' + t.[name] [Table]
+  FROM sys.tables t
+  INNER JOIN sys.schemas s ON t.[schema_id] = s.[schema_id]
+  WHERE NOT EXISTS
+  ( SELECT * FROM sys.key_constraints  kc
+    WHERE kc.[type] = N'PK' AND kc.parent_object_id = t.[object_id]
+  );

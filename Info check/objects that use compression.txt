@@ -1,0 +1,14 @@
+SELECT 
+ SCHEMA_NAME([sys].objects.SCHEMA_ID) AS [Schema Name] 
+,OBJECT_NAME([sys].objects.OBJECT_ID) AS [Object Name]
+,'ALTER INDEX ALL ON '+SCHEMA_NAME([sys].objects.SCHEMA_ID)+'.'
++OBJECT_NAME([sys].objects.OBJECT_ID)+' REBUILD WITH (DATA_COMPRESSION = None);' [Decompress CMD]
+,(SELECT OBJECTPROPERTY(OBJECT_ID(OBJECT_NAME([sys].objects.OBJECT_ID)),
+            'TableHasVarDecimalStorageFormat') ) AS [Table Has VarDecimal Storage Format]
+,[Rows] 
+,[data_compression_desc] [Compression Type]
+,[Index_id] AS [Index ID on Table]
+FROM [sys].partitions 
+INNER JOIN [sys].objects ON [sys].partitions.OBJECT_ID = [sys].objects.OBJECT_ID 
+WHERE [data_compression] > 0 AND SCHEMA_NAME([sys].objects.SCHEMA_ID) <> 'SYS' 
+ORDER BY [Schema Name], [Object Name];

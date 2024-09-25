@@ -1,0 +1,8 @@
+SELECT [Table] = s.[Name] + N'.' + t.[Name] 
+  FROM [sys].tables t
+  JOIN [sys].schemas  s ON t.[schema_id] = s.[schema_id]
+  WHERE EXISTS
+  (
+      SELECT * FROM [sys].identity_columns i
+      WHERE i.[object_id] = t.[object_id]
+  );

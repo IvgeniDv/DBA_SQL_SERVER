@@ -1,0 +1,17 @@
+ 
+SELECT
+	(physical_memory_kb) /1024 as ram_in_MB,
+	((physical_memory_kb) /1024)/1024 as ram_in_GB,
+	(virtual_memory_kb) /1024 as virtual_in_MB,
+	((virtual_memory_kb) /1024)/1024 as virtual_in_GB,
+	(committed_kb) /1024 as committed_MB, -- The amount of memory currently allocated by the buffer cache for use by database pages.
+	((committed_kb) /1024) /1024 as committed_GB,
+	(committed_target_kb) /1024 as committed_target_MB ,
+	((committed_target_kb) /1024)/1024 as committed_target_GB
+	/*
+	This is the amount of memory the buffer cache “wants” to use. 
+	If the amount currently in use (indicated by committed_kb) is higher than this amount,
+	 then the buffer manager will begin to remove older pages from memory. 
+	If the amount currently in use is lower then the buffer manager will allocate more memory for our data.
+	*/
+FROM sys.dm_os_sys_info;

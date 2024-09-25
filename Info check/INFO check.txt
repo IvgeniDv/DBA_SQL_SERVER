@@ -1,0 +1,170 @@
+/*
+================================================
+1. SQL Server Instance Information:
+================================================
+*/
+
+
+-- Get SQL Server version and edition
+SELECT @@VERSION AS 'SQL Server Version';
+
+--================================================
+
+
+-- Get instance info
+declare @dir nvarchar(4000) 
+
+exec master.dbo.xp_instance_regread
+    N'HKEY_LOCAL_MACHINE',
+    N'Software\Microsoft\MSSQLServer\Setup',
+    N'SQLPath', 
+    @dir output
+select @dir
+
+
+--================================================
+
+-- Get CPU and Memory Information
+SELECT
+    cpu_count AS 'CPU Count',
+    physical_memory_kb / 1024 AS 'Total RAM - Physical Memory (MB)' ,
+	physical_memory_kb / 1024 / 1000 AS 'Total RAM - Physical Memory (GB)'
+FROM sys.dm_os_sys_info;
+
+
+-- Determine current memory allocation
+SELECT
+(total_physical_memory_kb/1024) AS Total_OS_Memory_MB,
+(available_physical_memory_kb/1024)  AS Available_OS_Memory_MB
+FROM sys.dm_os_sys_memory;
+
+SELECT  
+(physical_memory_in_use_kb/1024) AS Memory_used_by_Sqlserver_MB,  
+(locked_page_allocations_kb/1024) AS Locked_pages_used_by_Sqlserver_MB,  
+(total_virtual_address_space_kb/1024) AS Total_VAS_in_MB,
+process_physical_memory_low,  
+process_virtual_memory_low  
+FROM sys.dm_os_process_memory; 
+
+-- Determine current SQL Server memory utilization
+SELECT
+sqlserver_start_time,
+(committed_kb/1024) AS Total_Server_Memory_MB,
+(committed_target_kb/1024)  AS Maximum_Server_Memory_MB
+FROM sys.dm_os_sys_info;
+
+
+-- Determine page life expectancy
+SELECT
+CASE instance_name WHEN '' THEN 'Overall' 
+ELSE instance_name 
+END AS NUMA_Node
+, cntr_value AS PLE_s  -- seconds
+, cntr_value /60 AS PLE_m  -- minutes 
+, ROUND(cast(cntr_value as float) /60 / 60 , 1)  AS PLE_h  -- hours
+FROM sys.dm_os_performance_counters    
+WHERE counter_name = 'Page life expectancy';
+
+
+
+/*
+================================================
+2. Database Information:
+================================================
+*/
+
+-- Get database size and space usage
+SELECT
+	database_id,
+    DB_NAME(database_id) AS 'Database',
+	state_desc,
+    size/128.0 AS 'Size (MB)',
+	[type_desc],
+    FILEPROPERTY(name, 'SpaceUsed')/128.0 AS 'Space Used (MB)',
+    (size - FILEPROPERTY(name, 'SpaceUsed'))/128.0 AS 'Available Space (MB)',
+	[physical_name],
+	
+	growth
+
+FROM sys.master_files
+
+
+/*
+================================================
+3. Backup Information:
+================================================
+*/
+
+-- Get information about the last full backup for each database
+SELECT
+    database_name AS 'Database',
+    MAX(backup_finish_date) AS 'Last Full Backup Date'
+FROM msdb.dbo.backupset
+WHERE type = 'D'
+GROUP BY database_name;
+
+-- Get information about the last log backup for each database
+SELECT
+    database_name AS 'Database',
+    MAX(backup_finish_date) AS 'Last Log Backup Date'
+FROM msdb.dbo.backupset
+WHERE type = 'L'
+GROUP BY database_name;
+
+
+/*
+================================================
+4. Querie info:
+================================================
+*/
+
+-- Find currently executing queries and their duration
+SELECT
+    r.[session_id],
+	r.start_time,
+	r.total_elapsed_time / 1000 as total_elapsed_time_s ,
+    r.[status],
+    r.command,
+    s.[text] AS 'Query Text',
+    transaction_isolation_level,
+	logical_reads,
+	reads,
+	writes,
+	cpu_time,
+	last_wait_type,
+	user_id,
+	database_id,
+	DB_NAME(r.database_id) AS 'Database'
+	
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) AS s
+
+
+
+-- Query execution history with duration and start time
+sELECT
+    deqs.creation_time AS 'Execution Time',
+    dest.text AS 'SQL Text',
+    deqs.execution_count AS 'Execution Count',
+    deqs.total_elapsed_time / 1000 AS 'Total Elapsed Time (s)',
+    deqs.total_worker_time / 1000 AS 'Total CPU Time (s)',
+    deqs.total_logical_reads AS 'Total Logical Reads',
+    deqs.total_physical_reads AS 'Total Physical Reads',
+    deqs.total_logical_writes AS 'Total Logical Writes'
+FROM sys.dm_exec_query_stats deqs
+CROSS APPLY sys.dm_exec_sql_text(deqs.sql_handle) AS dest
+ORDER BY deqs.creation_time DESC;
+
+-- Top CPU-Intensive Queries:
+SELECT TOP 10
+    total_worker_time / execution_count AS 'Avg CPU Time',
+    total_worker_time AS 'Total CPU Time',
+    total_logical_reads AS 'Total Logical Reads',
+    total_logical_writes AS 'Total Logical Writes',
+    total_physical_reads AS 'Total Physical Reads',
+    execution_count AS 'Execution Count',
+    text
+FROM sys.dm_exec_query_stats
+CROSS APPLY sys.dm_exec_sql_text(sql_handle)
+ORDER BY total_worker_time DESC;
+

@@ -1,0 +1,12 @@
+DECLARE @min_count INT;
+SET @min_count = 2;
+SELECT [Table] = s.[Name] + N'.' + t.[Name]
+  FROM [sys].tables t
+  JOIN [sys].schemas s ON t.[schema_id] = s.[schema_id]
+  WHERE EXISTS
+  (
+    SELECT 1 FROM [sys].triggers tr
+      WHERE tr.parent_id = t.[object_id]
+      GROUP BY tr.parent_id
+      HAVING COUNT(*) >= @min_count
+  );

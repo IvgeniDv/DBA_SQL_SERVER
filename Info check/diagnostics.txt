@@ -1,0 +1,104 @@
+
+-- Get a picture of whats running and blocking
+
+sp_who
+
+sp_who2
+
+select *
+from sys.dm_exec_sessions
+where session_id > 50
+
+select *
+from sys.dm_exec_requests
+where session_id > 50
+
+select *
+from sys.dm_exec_requests_history
+
+
+-- I/O
+
+select *
+from sys.dm_os_performance_counters
+
+-- HARDWARE STATS
+
+select *
+from sys.dm_os_wait_stats  -- same as DBCC SQLPERF(waitstats)
+
+
+
+select *
+from sys.dm_os_waiting_tasks
+
+
+
+
+--=====================================================
+
+-- Get the query that a spesific spid ran
+-- 56 = spid number
+
+DBCC INPUTBUFFER (56)
+
+--=====================================================
+
+-- List all objects in an instance
+
+SELECT *
+FROM SYS.SYSOBJECTS
+
+--=====================================================
+
+SELECT *
+FROM SYS.SYSPROCESSES
+
+--=====================================================
+-- shows data regarding page files of table
+
+USE [AdventureWorks2022]
+GO
+DBCC SHOWCONTIG
+
+--=====================================================
+
+-- INDEX INFO
+
+SELECT *
+FROM SYS.INDEXES
+
+select *
+from sys.dm_db_index_usage_stats
+
+
+/*
+	Takes 5 parameters:
+	DB ID
+	OBJECT ID
+	INDEX ID
+	Partition ID
+	Mode
+*/
+
+SELECT *
+FROM sys.dm_db_index_physical_stats(NULL,NULL,NULL,NULL,NULL)
+WHERE Index_ID <> 0
+AND Avg_fragmentation_in_percent > 20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

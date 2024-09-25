@@ -1,0 +1,14 @@
+SELECT [Table] = s.[Name] + N'.' + t.[Name]
+  FROM [sys].tables t
+  JOIN [sys].schemas s ON t.[schema_id] = s.[schema_id]
+  WHERE EXISTS
+  (
+    SELECT 1 FROM [sys].columns c
+      WHERE c.[object_id] = t.[object_id]
+      AND c.system_type_id IN 
+      (
+        34, -- image
+        35, -- text
+        99  -- ntext
+      )
+  );

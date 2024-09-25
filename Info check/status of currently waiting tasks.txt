@@ -1,0 +1,8 @@
+select wt.session_id, wt.exec_context_id, wt.wait_duration_ms, wt.wait_type, wt.blocking_session_id, wt.resource_address, wt.resource_description, s.program_name, st.text, sp.query_plan, s.cpu_time cpu_time_ms, s.memory_usage*8 memory_usage_kb
+from sys.dm_os_waiting_tasks wt
+	join sys.dm_exec_sessions s on s.session_id=wt.session_id
+	join sys.dm_exec_requests r on r.session_id=s.session_id
+	outer apply sys.dm_exec_sql_text(r.sql_handle) st
+	outer apply sys.dm_exec_query_plan(r.plan_handle) sp
+where s.is_user_process=1
+order by wt.session_id, wt.exec_context_id;
