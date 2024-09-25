@@ -1,0 +1,12 @@
+-- import csv
+
+
+-- import the file
+BULK INSERT #TempTable
+FROM 'Full_path________\File_Name.csv'
+WITH
+(
+        FORMAT='CSV',
+        FIRSTROW=2  -- from which row to start
+)
+GO

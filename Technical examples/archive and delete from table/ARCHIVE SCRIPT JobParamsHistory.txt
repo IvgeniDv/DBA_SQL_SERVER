@@ -1,0 +1,57 @@
+
+USE [dbtest]
+
+/*
+@Date
+מחזיק את התאריך שלושה חודשים אחורה
+*/
+DECLARE @Date  date   = DATEADD(m,-3,getdate())  
+ 
+-- select @Date
+
+
+IF OBJECT_ID(N'tempdb..#temp1') IS NOT NULL DROP TABLE #temp1
+SELECT *
+INTO #temp1
+FROM (select JobId 
+      from JobParamsHistory
+      where JobId in (select job.JobId from  JobsHistory job where job.StartDate < @Date)) as temp ;
+
+/*
+@I
+מחזיק את כמות הרשומות למחיקה 
+כלומר, כמה רשומות יש המתחילות לפני התאריך הנקוב בבפרמטר של התאריך 
+ישמש גם כתנאי עצירה.
+*/
+DECLARE @I INT = SELECT ISNULL((select TOP(1) JobId 
+  from JobParamsHistory
+  where JobId in (select JobId from #temp1)),0);
+
+
+ 
+
+-- select @I
+
+WHILE @I > 0
+	BEGIN
+
+		--PRINT N'Started'; 
+
+		WAITFOR DELAY '00:00:00.200'
+		BEGIN TRAN ARCHIVEJobParamsHistory
+
+			
+			DELETE top (1000) FROM CTE
+			OUTPUT DELETED.* INTO [Archive_DBA_TEST].[dbo].[JobParamsHistory_ARCHIVE]
+			FROM [dbtest].[dbo].[JobParamsHistory] CTE
+			WHERE CTE.JobId in (select JobId from  #temp1); 	  
+
+		COMMIT TRAN ARCHIVEJobParamsHistory
+
+
+		-- decrementation of @I
+		SET @I =  SELECT ISNULL((select TOP(1) JobId 
+  				from JobParamsHistory
+ 				 where JobId in (select JobId from #temp1)),0);
+
+	END  -- end  of while loop

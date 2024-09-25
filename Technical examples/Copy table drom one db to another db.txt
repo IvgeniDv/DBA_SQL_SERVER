@@ -1,0 +1,232 @@
+/*
+25.02.24
+
+	******
+	README
+	******
+
+
+		I assume both databases are on the same instance of SQL Server.
+
+	1.	Script the table in source DB (Sript Table as > Create to > New query). 
+	2.	Copy the script and change the use of database and schema if needed (usually its dbo. but sometimes it may not be the case).
+
+		The part of the script regarding FK (FOREIGN KEY) may fail - obviously it depends whether we have the FK source tables in the destination DB 
+		If the script of creating the table fails on FK - you can still go on with the process. - If nedded - do the same process for the tables of the FK, and then rerun the script to create those FK connections.
+
+	3.	Copy data from one DB to another using the provided script (see below).
+
+	4.	Scrip the indexes in source DB (Go to Indexes > Script Index as > Create To > New Query) 
+	5.	Copy the scripts (for each index individually) to destination DB and change the use of database and schema if needed
+
+		That's it. 
+
+
+*/
+
+
+
+
+/*
+======================================================
+	
+	Assume both databases are on the same instance of SQL Server.
+
+	1.	Script (Sript Table as > Create to > New query) the table in source DB
+	2.	Copy the script and change according to new parameters
+		i.e change the use of database, change schema if needed.
+
+		The part of the script regarding FK (FOREIGN KEY) may fail - obviously it depends whether we have the FK source tables in the destination DB 
+		If the script fails on FK - you can still go on with the process. - If nedded - do the same for the tables of the FK, and then rerun the script to create those FK connections.
+
+======================================================
+*/
+
+	USE [Northwind] -- Destination DB
+	GO
+
+CREATE TABLE [ProductInventory](
+	[ProductID] [int] NOT NULL,
+	[LocationID] [smallint] NOT NULL,
+	[Shelf] [nvarchar](10) NOT NULL,
+	[Bin] [tinyint] NOT NULL,
+	[Quantity] [smallint] NOT NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_ProductInventory_ProductID_LocationID] PRIMARY KEY CLUSTERED 
+(
+	[ProductID] ASC,
+	[LocationID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/*
+======================================================
+	
+	This part may fail (FOREIGN KEY)
+
+======================================================
+*/
+
+	
+ALTER TABLE [ProductInventory] ADD  CONSTRAINT [DF_ProductInventory_Quantity]  DEFAULT ((0)) FOR [Quantity]
+GO
+
+ALTER TABLE [ProductInventory] ADD  CONSTRAINT [DF_ProductInventory_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [ProductInventory] ADD  CONSTRAINT [DF_ProductInventory_ModifiedDate]  DEFAULT (getdate()) FOR [ModifiedDate]
+GO
+
+ALTER TABLE [ProductInventory]  WITH CHECK ADD  CONSTRAINT [FK_ProductInventory_Location_LocationID] FOREIGN KEY([LocationID])
+REFERENCES [Location] ([LocationID])
+GO
+
+ALTER TABLE [ProductInventory] CHECK CONSTRAINT [FK_ProductInventory_Location_LocationID]
+GO
+
+ALTER TABLE [ProductInventory]  WITH CHECK ADD  CONSTRAINT [FK_ProductInventory_Product_ProductID] FOREIGN KEY([ProductID])
+REFERENCES [Product] ([ProductID])
+GO
+
+ALTER TABLE [ProductInventory] CHECK CONSTRAINT [FK_ProductInventory_Product_ProductID]
+GO
+
+ALTER TABLE [ProductInventory]  WITH CHECK ADD  CONSTRAINT [CK_ProductInventory_Bin] CHECK  (([Bin]>=(0) AND [Bin]<=(100)))
+GO
+
+ALTER TABLE [ProductInventory] CHECK CONSTRAINT [CK_ProductInventory_Bin]
+GO
+
+ALTER TABLE [ProductInventory]  WITH CHECK ADD  CONSTRAINT [CK_ProductInventory_Shelf] CHECK  (([Shelf] like '[A-Za-z]' OR [Shelf]='N/A'))
+GO
+
+ALTER TABLE [ProductInventory] CHECK CONSTRAINT [CK_ProductInventory_Shelf]
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Product identification number. Foreign key to Product.ProductID.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'ProductID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Inventory location identification number. Foreign key to Location.LocationID. ' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'LocationID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Storage compartment within an inventory location.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'Shelf'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Storage container on a shelf in an inventory location.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'Bin'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Quantity of products in the inventory location.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'Quantity'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Default constraint value of 0' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'DF_ProductInventory_Quantity'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'rowguid'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Default constraint value of NEWID()' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'DF_ProductInventory_rowguid'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Date and time the record was last updated.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'COLUMN',@level2name=N'ModifiedDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Default constraint value of GETDATE()' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'DF_ProductInventory_ModifiedDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Primary key (clustered) constraint' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'PK_ProductInventory_ProductID_LocationID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Product inventory information.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Foreign key constraint referencing Location.LocationID.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'FK_ProductInventory_Location_LocationID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Foreign key constraint referencing Product.ProductID.' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'FK_ProductInventory_Product_ProductID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Check constraint [Bin] BETWEEN (0) AND (100)' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'CK_ProductInventory_Bin'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Check constraint [Shelf] like ''[A-Za-z]'' OR [Shelf]=''N/A''' , @level0type=N'SCHEMA',@level0name=N'Production', @level1type=N'TABLE',@level1name=N'ProductInventory', @level2type=N'CONSTRAINT',@level2name=N'CK_ProductInventory_Shelf'
+GO
+
+/*
+======================================================
+
+	End of this part (FOREIGN KEY)
+
+======================================================
+*/
+
+
+/*
+======================================================
+
+	3.	Copy data from one DB to another
+
+======================================================
+*/
+
+	USE [Northwind]  -- Destination DB
+	GO
+
+	INSERT INTO [Northwind].[dbo].[ProductInventory]  --[DATABASE].[SCHEMA(USUALLY DBO)].[TABLE NAME]
+	SELECT * FROM [AdventureWorks2022].[Production].[ProductInventory]
+	
+
+/*
+======================================================
+
+	4.	Scrip the indexes (Go to Indexes > Script Index as > Create To > New Query) in source DB
+	5.	Copy the scripts (for each index individually) to destination DB ,change according to new parameters
+		i.e change the use of database, change schema if needed.
+
+======================================================
+*/
+
+	USE [Northwind] -- [destination db]
+GO
+
+/****** Object:  Index [INDEX1]    Script Date: 25/02/2024 18:37:40 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [INDEX1] ON [Northwind].[dbo].[ProductInventory]  -- [destination db].[destination schema].[destination table]
+(
+	[ProductID] ASC,
+	[LocationID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+
+
+/****** Object:  Index [INDEX2]    Script Date: 25/02/2024 18:38:36 ******/
+CREATE NONCLUSTERED INDEX [INDEX2] ON [Northwind].[dbo].[ProductInventory]
+(
+	[Bin] ASC,
+	[Shelf] ASC,
+	[Quantity] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+
+/****** Object:  Index [INDEX3]    Script Date: 25/02/2024 18:39:01 ******/
+CREATE NONCLUSTERED INDEX [INDEX3] ON [Northwind].[dbo].[ProductInventory]
+(
+	[LocationID] ASC,
+	[Shelf] ASC,
+	[Bin] ASC,
+	[rowguid] ASC,
+	[ModifiedDate] ASC
+)
+INCLUDE([ProductID],[Quantity]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+
+/*
+======================================================
+
+	FINISHED
+
+======================================================
+*/

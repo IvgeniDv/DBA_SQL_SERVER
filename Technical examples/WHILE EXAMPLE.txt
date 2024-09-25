@@ -1,0 +1,13 @@
+DECLARE @i INT = 1000000;
+
+WHILE (@i > 0)
+BEGIN
+
+  insert into [ErrorLog]
+  VALUES (GETDATE(),'SNOOPER',@I,2,1,NULL,420,'HEY CAT');
+
+  PRINT @i;  
+
+  SET @i = @i - 1;
+
+END;

@@ -1,0 +1,74 @@
+
+
+/*
+================================================================
+DBCC CHECKDB example
+================================================================
+
+-- Check the current database.
+DBCC CHECKDB;
+GO
+-- Check the AdventureWorks2022 database without nonclustered indexes.
+DBCC CHECKDB (AdventureWorks2022, NOINDEX);
+GO
+
+DBCC CHECKDB WITH NO_INFOMSGS; -- dont print messages
+GO
+
+
+DBCC CHECKDB(N'master')  WITH  MAXDOP = 4 , PHYSICAL_ONLY
+GO
+*/
+
+
+
+/*
+================================================================
+RUN TO CREATE SCRIPT FOR DBCC CHECKDB
+================================================================
+*/
+
+
+DROP TABLE IF EXISTS tempdb..#script_dbcc_checkdb
+CREATE TABLE #script_dbcc_checkdb(
+    [scripts_ready_to_copy_and_run] NVARCHAR(MAX)
+);
+
+
+
+DECLARE @DB_NAME NVARCHAR(MAX);
+DECLARE @SQL NVARCHAR(1000); 
+
+
+DECLARE CURSOR_TABLE CURSOR
+	FOR 
+		(SELECT 
+			[NAME]
+		FROM
+  			SYS. DATABASES AS DB
+		WHERE database_id <> 2	); -- dont include tempdb
+
+OPEN CURSOR_TABLE
+
+
+FETCH NEXT FROM CURSOR_TABLE INTO 
+	@DB_NAME;
+
+WHILE @@FETCH_STATUS = 0
+    BEGIN
+		SET @SQL = 'DBCC CHECKDB (' + @DB_NAME + ') WITH NO_INFOMSGS ;';
+	
+		INSERT INTO #script_dbcc_checkdb
+		VALUES(''+@SQL+'')
+
+		--EXECUTE  SP_EXECUTESQL @SQL;
+	
+        FETCH NEXT FROM CURSOR_TABLE INTO 
+			@DB_NAME;
+    END;
+
+CLOSE CURSOR_TABLE;
+DEALLOCATE CURSOR_TABLE;
+
+SELECT  *
+FROM #script_dbcc_checkdb

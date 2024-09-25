@@ -1,0 +1,23 @@
+
+-- example of how to use IF EXISTS with a follow up SELECT
+-- This query finds out whether or not there is a TABLE in the data source that matches some kind of search parameters.
+IF EXISTS(
+SELECT *
+FROM
+  	INFORMATION_SCHEMA.TABLES
+WHERE
+	TABLE_NAME = 'SalesTaxRate'
+)
+SELECT 'found' AS search_result ELSE SELECT 'not found' AS search_result;
+
+-- ==================================================================
+
+DROP TABLE IF EXISTS tempdb..#table_name
+CREATE TABLE #able_name(
+    [script] NVARCHAR(MAX)
+);
+
+
+
+
+IF OBJECT_ID(N'tempdb..#temptable') IS NOT NULL DROP TABLE #temptable

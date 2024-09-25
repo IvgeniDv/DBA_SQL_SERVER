@@ -1,0 +1,55 @@
+
+
+USE [test_prod_copy]
+
+
+DECLARE @Date DATE  = DATEADD(m,-3,getdate()); -- שלושה חודשים אחורה
+
+--select @Date
+
+
+IF OBJECT_ID(N'tempdb..#temp1') IS NOT NULL DROP TABLE #temp1
+SELECT *
+INTO #temp1
+FROM (SELECT [WebmailId]
+					FROM [dbo].[WebAttachments]
+					WHERE [WebmailId] IN (SELECT w1.WebmailId
+												FROM  Webmails w1 where  w1.CreationDate < @Date))  as temp
+
+
+DECLARE @I INT = SELECT ISNULL((SELECT TOP(1) [WebmailId]
+FROM [dbo].[WebAttachments]
+WHERE [WebmailId] IN (SELECT [WebmailId] FROM #temp1)), 0);
+
+
+
+
+
+--select @I
+
+
+WHILE (@I > 0 )
+	BEGIN
+
+	WAITFOR DELAY '00:00:00.200'
+
+	BEGIN TRAN deleteWebAttachments
+
+
+	DELETE top (1000) FROM CTE
+	FROM [dbo].[WebAttachments] CTE
+	WHERE CTE.[WebmailId] IN (SELECT [WebmailId] FROM #temp1)
+
+
+	COMMIT TRAN deleteWebAttachments
+
+
+
+	
+	SET @I =  SELECT ISNULL((SELECT TOP(1) [WebmailId]
+			FROM [dbo].[WebAttachments]
+			WHERE [WebmailId] IN (SELECT [WebmailId] FROM #temp1)), 0);
+
+
+
+	END -- end  of while loop
