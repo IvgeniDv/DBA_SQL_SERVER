@@ -1,0 +1,16 @@
+
+-- This query will return a list of all the columns and tables in the database you are querying.
+SELECT
+	TABLE_NAME,
+	COLUMN_NAME
+FROM
+  	INFORMATION_SCHEMA.COLUMNS
+
+-- =================================================================================================
+-- This query will return all of the tables in the database you are querying
+SELECT
+  	TABLE_NAME
+FROM
+  	INFORMATION_SCHEMA.TABLES
+ORDER BY TABLE_NAME
+

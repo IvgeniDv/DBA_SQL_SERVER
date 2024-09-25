@@ -1,0 +1,10 @@
+WITH fileSize AS
+(
+    SELECT DATABASE_ID, TYPE, SIZE * 8 / 1024 AS [dbFileSize]
+    FROM SYS.MASTER_FILES
+)
+SELECT 
+     name
+    ,(SELECT SUM(dbFileSize) FROM fileSize WHERE type = 0 and fileSize.database_id = db.database_id) AS [Data in MB]
+    ,(select SUM(dbFileSize) FROM fileSize WHERE type = 1 and fileSize.database_id = db.database_id) AS [Log in MB]
+from sys.databases AS db

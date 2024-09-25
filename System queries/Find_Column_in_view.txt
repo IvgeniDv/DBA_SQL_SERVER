@@ -1,0 +1,4 @@
+-- Returns all columns in the current database that is used in a view definition
+SELECT *
+FROM 
+	INFORMATION_SCHEMA.VIEW_COLUMN_USAGE

@@ -1,0 +1,7 @@
+SELECT
+    name AS [Index name],
+    STATS_DATE(object_id, index_id) AS [statistics update date]
+FROM
+    sys.indexes
+WHERE
+    object_id = OBJECT_ID('TableName');

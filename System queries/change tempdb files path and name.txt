@@ -1,0 +1,40 @@
+--==================================
+/*
+1.
+Run this script and save the path.
+select physical_name
+from sys.master_files
+WHERE database_id = 2
+and type_desc = 'ROWS'
+*/
+--==================================
+
+--==================================
+/*
+2.
+Change logical_name
+Change physical_path
+*/
+--==================================
+
+
+USE [tempdb]
+GO
+
+ALTER DATABASE tempdb MODIFY FILE ( NAME = logical_name  , FILENAME = 'C:\physical_path\fileName.mdf' );
+
+--==================================
+/*
+3. Restart SQLSERVER service
+--==================================
+
+--==================================
+/*
+3.
+Run this script and check the path.
+select physical_name
+from sys.master_files
+WHERE database_id = 2
+and type_desc = 'ROWS'
+*/
+--==================================

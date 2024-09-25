@@ -1,0 +1,35 @@
+-- =====================================================
+/*
+The following query retrieves all foreign keys in the database, 
+including their related tables and columns.
+*/
+-- =====================================================
+
+SELECT 
+	fk.name AS ForeignKeyName
+    ,t_parent.name AS ParentTableName
+    , c_parent.name AS ParentColumnName
+    , t_child.name AS ReferencedTableName
+    , c_child.name AS ReferencedColumnName
+
+FROM sys.foreign_keys fk 
+
+INNER JOIN sys.foreign_key_columns fkc
+    ON fkc.constraint_object_id = fk.object_id
+
+INNER JOIN sys.tables t_parent
+    ON t_parent.object_id = fk.parent_object_id
+
+INNER JOIN sys.columns c_parent
+    ON fkc.parent_column_id = c_parent.column_id  
+    AND c_parent.object_id = t_parent.object_id 
+
+INNER JOIN sys.tables t_child
+    ON t_child.object_id = fk.referenced_object_id
+
+INNER JOIN sys.columns c_child
+    ON c_child.object_id = t_child.object_id
+    AND fkc.referenced_column_id = c_child.column_id
+
+ORDER BY t_parent.name, c_parent.name;
+
