@@ -1,0 +1,36 @@
+SELECT 
+  b.name
+, a.database_id
+, a.[FILE_ID]
+, a.num_of_reads
+, a.num_of_bytes_read
+, a.io_stall_read_ms
+, a.num_of_writes
+, a.num_of_bytes_written
+, a.io_stall_write_ms
+, a.io_stall
+, GetDate() AS StartTime
+INTO
+  #IOStatsBefore
+FROM 
+  sys.dm_io_virtual_file_stats(NULL, NULL) a 
+    INNER JOIN 
+  sys.databases b ON a.database_id = b.database_id;
+ 
+ 
+WAITFOR DELAY '00:00:15'
+ 
+SELECT
+  a.name DatabaseName
+, a.[FILE_ID]
+, (b.io_stall_read_ms - a.io_stall_read_ms)/ CAST(1000 as DECIMAL(10,1)) io_stall_read_Diff 
+, (b.io_stall_write_ms - a.io_stall_write_ms)/ CAST(1000 as DECIMAL(10,1)) io_stall_write_Diff 
+, (b.io_stall - a.io_stall)/ CAST(1000 as DECIMAL(10,1)) io_stall_Diff 
+, DATEDIFF(s,StartTime, GETDATE()) AS DurationSeconds
+FROM 
+  #IOStatsBefore a
+    INNER JOIN 
+  sys.dm_io_virtual_file_stats(NULL, NULL) b ON a.database_id = b.database_id AND a.[file_id] = b.[file_id]
+ORDER BY
+  a.name
+, a.[FILE_ID];

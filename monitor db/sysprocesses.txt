@@ -1,0 +1,30 @@
+/*
+
+CPU_time column on Sys.Exec_requests and Sys.processes indicates amount of time in milliseconds the process was utilizing the CPU. 
+CPU time is similar to "man hours" calculation used in Corporate world. 
+If two men work for 1 hour each then the man hours spent is 2 hours.
+ Similarly CPU time is amount of time all the processors spent on executing your query.
+ -------------------------------------------------------------------------------------------------------------------------------------------
+ status - 
+		- Process ID status. The possible values are:
+		- dormant = SQL Server is resetting the session.
+		- running = The session is running one or more batches. When Multiple Active Result Sets (MARS) is enabled,
+		  a session can run multiple batches. For more information, see Using Multiple Active Result Sets (MARS).
+		- background = The session is running a background task, such as deadlock detection.
+		- rollback = The session has a transaction rollback in process.
+		- pending = The session is waiting for a worker thread to become available.
+		- runnable = The task in the session is in the runnable queue of a scheduler while waiting to get a time quantum.
+		- spinloop = The task in the session is waiting for a spinlock to become free.
+		- suspended = The session is waiting for an event, such as I/O, to complete.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+*/
+
+
+select  (cpu * 0.001) as [cpu in seconds], ((cpu * 0.001) * 0.0166) as [cpu in minutes] , ((cpu * 0.001) * 0.0166) * 0.0166 as [cpu in hours] , *
+from sys.sysprocesses 
+where spid  > 50
+and loginame not like 'sa                                                                                                                              '
+
+order by cpu desc

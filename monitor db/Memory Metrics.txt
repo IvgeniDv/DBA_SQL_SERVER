@@ -1,0 +1,18 @@
+-- check what it does
+SELECT  
+  LEFT(counter_name, 25) CounterName
+, CASE counter_name 
+    WHEN 'Stolen pages' THEN cntr_value/128 --8kb pages/128 = MB 
+    WHEN 'Stolen Server Memory (KB)' THEN cntr_value/1024 --kb/1024 = MB 
+    ELSE cntr_value
+  END CounterValue_converted_to_MB
+FROM 
+  sys.dm_os_performance_counters
+
+/*
+WHERE 
+  OBJECT_NAME = N'SQLServer:Buffer Manager' 
+    AND 
+  counter_name = 'Page life expectancy';
+*/
+
