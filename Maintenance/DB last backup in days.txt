@@ -1,0 +1,48 @@
+/*
+====================================================================================================
+Number of days (from start of the year) since last backup 
+====================================================================================================
+*/
+
+SELECT 
+MAX(ISNULL(DATEDIFF(DD,ISNULL(B.BACKUP_START_DATE, '01/01/2024'),GETDATE()),0)) AS 'Days since last backup'
+,D.[name]
+,[dbid]
+,[crdate] as [db creation date]
+, case
+	WHEN [cmptlevel] = 90  THEN '(90) 2008'
+	WHEN [cmptlevel] = 100   THEN '(100) 2008'
+	WHEN [cmptlevel] = 110  THEN '(110) 2012'
+	WHEN [cmptlevel] = 120  THEN '(120) 2014'
+	WHEN [cmptlevel] =130 THEN '(130) 2016'
+	WHEN [cmptlevel]= 140  THEN '(140) 2017'
+	WHEN [cmptlevel] = 150  THEN '(150) 2019'
+	WHEN [cmptlevel] = 160 THEN '(160) 2022'
+end  as [compatibility level]
+,B.[name] as [Backup name]
+,[backup_finish_date]
+,[backup_size]/1000000 as [backup_size in mb]
+,[compressed_backup_size]  /1000000 as [backup_size in mb on disk]
+,[collation_name]
+,[recovery_model]
+,[is_snapshot]
+,[is_readonly]
+,[is_single_user]
+,[has_backup_checksums]
+/*
+MAX(ISNULL(DATEDIFF(DD,ISNULL(B.BACKUP_START_DATE, '01/01/2024'),GETDATE()),0)) AS 'Days since last backup'
+, D.NAME AS 'DBNAME'  */
+FROM sys.SYSDATABASES D 
+LEFT JOIN MSDB..BACKUPSET B ON D.NAME = B.DATABASE_NAME
+AND B.BACKUP_START_DATE = (SELECT MAX(backup_start_date)
+FROM MSDB..BACKUPSET B2
+WHERE B.DATABASE_NAME = B2.DATABASE_NAME AND B2.TYPE IN ('D','I'))
+WHERE D.NAME != 'TEMPDB'
+
+AND DATABASEPROPERTYEX(D.NAME, 'STATUS') = 'ONLINE'
+GROUP BY D.NAME, B.TYPE, B.BACKUP_SIZE, [dbid], [crdate],[cmptlevel],[collation_name]
+,[recovery_model]
+,[is_snapshot]
+,[is_readonly]
+,[is_single_user]
+,[has_backup_checksums], [compressed_backup_size],[backup_size],B.[name],[backup_finish_date]
