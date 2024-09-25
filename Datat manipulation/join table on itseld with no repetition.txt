@@ -1,0 +1,28 @@
+create table city(
+city_name nvarchar(20),
+x float,
+y float
+);
+
+
+/*
+drop table city
+*/
+
+
+insert into city(city_name, x, y)
+values
+('Ashkelon',4 ,1 ),
+('Ashdod',5 , 88),
+('Tel Aviv', 12, 22),
+('Rishon', 33,44 ),
+('Arad', 2222,33 )
+
+
+SELECT *
+FROM city as c1
+INNER JOIN city as c2 on c2.city_name <> c1.city_name
+WHERE
+c2.city_name > c1.city_name
+
+

@@ -1,0 +1,36 @@
+
+
+-- sample how to divide text input
+
+declare @test nvarchar(max);
+
+set @test = '31207655 , 999999999 , 123456789, 987654321, 888888888, 787777777, 456456456 ,'
+
+
+--drop table #STRINGS
+--drop table #trimed
+SELECT trim(' ' from value) as trimed
+INTO #STRINGS 
+FROM string_split(@test,',') 
+
+select *
+from #STRINGS 
+
+
+-- sample how to divide text input version 2 using XML
+
+declare @ID nvarchar(max)
+set @ID = '31207655 , 999999999 , 123456789, 987654321, 888888888, 787777777, 456456456 ,'
+
+-------ID----	
+declare @IDXml as xml
+set @IDXml=cast(('<A>'+replace(@ID,',','</A><A>')+'</A>') as XML)
+
+select a.value('.','varchar(max)') as ID
+into #ID
+from @IDXml.nodes('A') as FN(A)
+-- drop table #ID
+
+select *
+from #ID
+
