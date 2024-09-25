@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif
+        }
+
+        body, html {
+            height: 100%;
+            line-height: 1.8;
+        }
+
+
+
+        .w3-bar .w3-button {
+            padding: 16px;
+        }
+
+        .center {
+            margin: auto;
+            width: 350px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar (sit on top) -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card" id="myNavbar">
+            <a href="#home" class="w3-bar-item w3-button w3-wide">SQL CAT</a>
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <a href="#Audit and Log data" class="w3-bar-item w3-button">Audit and Log data</a>
+                <a href="#Datat manipulation" class="w3-bar-item w3-button">Datat manipulation</a>
+                <a href="#Maintenance" class="w3-bar-item w3-button">Maintenance</a>
+                <a href="#indexes" class="w3-bar-item w3-button">Indexes</a>
+                <a href="#Info check" class="w3-bar-item w3-button">Info check</a>
+                <a href="#Job info" class="w3-bar-item w3-button">Job info</a>
+                <a href="#DB Monitor" class="w3-bar-item w3-button">DB Monitor</a>
+                <a href="#security" class="w3-bar-item w3-button">Security</a>
+                <a href="#System queries" class="w3-bar-item w3-button">System queries</a>
+                <a href="#Technical examples" class="w3-bar-item w3-button">Technical examples</a>
+
+            </div>
+            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar on small screens when clicking the menu icon -->
+    <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close x</a>
+        <a href="#Audit and Log data" onclick="w3_close()" class="w3-bar-item w3-button">Audit and Log data</a>
+        <a href="#Datat manipulation" onclick="w3_close()" class="w3-bar-item w3-button">Datat manipulation</a>
+        <a href="#Maintenance" onclick="w3_close()" class="w3-bar-item w3-button">Maintenance</a>
+        <a href="#indexes" onclick="w3_close()" class="w3-bar-item w3-button">Indexes</a>
+        <a href="#Info check" onclick="w3_close()" class="w3-bar-item w3-button">Info check</a>
+        <a href="#Job info" onclick="w3_close()" class="w3-bar-item w3-button">Job info</a>
+        <a href="#DB Monitor" onclick="w3_close()" class="w3-bar-item w3-button">DB Monitor</a>
+        <a href="#security" onclick="w3_close()" class="w3-bar-item w3-button">Security</a>
+        <a href="#System queries" onclick="w3_close()" class="w3-bar-item w3-button">System queries</a>
+        <a href="#Technical examples" onclick="w3_close()" class="w3-bar-item w3-button">Technical examples</a>
+
+    </nav>
+
+
+
+
+    <div class="w3-container " style=" margin-top: 180px; margin-bottom: 20px; " id="home">
+        <h3 id="home" class="w3-text-black">Selection of scripts and links for SQL Server I wrote or found over time.</h3>
+    </div>
+
+
+
+    <!-- Audit and Log data -->
+    <div class="w3-container" style="padding:12px 16px" id="Audit and Log data">
+        <h3 class="w3-center">Audit and Log data</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://learn.microsoft.com/en-us/sql/ssms/configure-login-auditing-sql-server-management-studio?view=sql-server-ver16" style="text-decoration:none;">LINK: Configure login auditing - Microsoft Learn</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://learn.microsoft.com/en-us/sql/relational-databases/security/auditing/create-a-server-audit-and-database-audit-specification?view=sql-server-ver16" style="text-decoration:none;">LINK: Create a server audit & database audit specification - Microsoft Learn</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://www.sqlshack.com/sql-server-query-store-overview/" style="text-decoration:none;">LINK: SQL Server Query Store - Overview - sqlshack</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Audit%20and%20Log%20data/CREATE%20TRIGGER%20FOR%20CREATE_TABLE%20ALTER_TABLE%20DROP_TABLE.txt" style="text-decoration:none;">SCRIPT: CREATE TRIGGER FOR CREATE_TABLE ALTER_TABLE DROP_TABLE</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Audit%20and%20Log%20data/CREATE%20TRIGGER%20FOR%20LOGON.txt" style="text-decoration:none;">SCRIPT: CREATE TRIGGER FOR LOGON</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Audit%20and%20Log%20data/query%20data%20from%20sql%20audit%20log.txt" style="text-decoration:none;">SCRIPT: Query data from sql audit log</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Datat manipulation -->
+    <div class="w3-container" style="padding:12px 16px" id="Datat manipulation">
+        <h3 class="w3-center">Datat manipulation</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Datat%20manipulation/divide_text_input_by_comma.txt" style="text-decoration:none;">SCRIPT: Divide text comma delimited using xml</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Datat%20manipulation/join%20table%20on%20itseld%20with%20no%20repetition.txt" style="text-decoration:none;">SCRIPT: Join a table on itself with no repetition</a>
+            </div>
+        </div>
+
+
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="" style="text-decoration:none;">SCRIPT:  </a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Maintenance -->
+    <div class="w3-container" style="padding:12px 16px" id="Maintenance">
+        <h3 class="w3-center">Maintenance</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Maintenance/backup%20DB%20and%20revalidate%20using%20checksum.txt" style="text-decoration:none;">SCRIPT: Backup DB and revalidate using checksum</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Maintenance/DB%20last%20backup%20in%20days.txt" style="text-decoration:none;">SCRIPT: DB last backup in days</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Maintenance/LAST%20SUCCESSFULL%20DBCC.txt" style="text-decoration:none;">SCRIPT: LAST SUCCESSFULL DBCC</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    <!-- indexes -->
+    <div class="w3-container" style="padding:12px 16px" id="indexes">
+        <h3 class="w3-center">Indexes</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/buffer%20pool%20break%20down%20by%20database%20and%20amount%20of%20space%20being%20taken%20up.txt" style="text-decoration:none;">SCRIPT: Buffer pool break down by database and amount of space being taken up</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/check%20for%20nonclustered%20indexes%20using%20computed%20columns.txt" style="text-decoration:none;">SCRIPT: Check for nonclustered indexes using computed columns</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/DBCC%20SHOW_STATISTICS.txt" style="text-decoration:none;">SCRIPT: DBCC SHOW_STATISTICS</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/find%20missing%20idexes.txt" style="text-decoration:none;">SCRIPT: Find missing idexes</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/Find%20unused%20Indexes%20and%20create%20drop%2C%20disable%20and%20rebuild%20scripts.txt" style="text-decoration:none;">SCRIPT: Find unused Indexes and create drop, disable and rebuild scripts</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Indexes/Index%20count.txt" style="text-decoration:none;">SCRIPT: Index count</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- security -->
+    <div class="w3-container" style="padding:12px 16px" id="security">
+        <h3 class="w3-center">Security</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://www.mssqltips.com/sqlservertip/7447/sql-server-database-security-logins-users/" style="text-decoration:none;">LINK: SQL Server Database Security - Logins and Users - mssqltips</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://www.mssqltips.com/sqlservertip/1887/understanding-sql-server-fixed-server-roles/" style="text-decoration:none;">LINK: Understanding SQL Server fixed server roles - mssqltips</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/all%20active%20logins%20in%20instance.txt" style="text-decoration:none;">SCRIPT: All active logins in instance</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/db%20principals.txt" style="text-decoration:none;">SCRIPT: DB principals</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/last%20password%20change%20for%20login.txt" style="text-decoration:none;">SCRIPT: Last password change for login</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/map%20all%20users%20by%20db%20using%20CURSOR.txt" style="text-decoration:none;">SCRIPT: Map all users by db using CURSOR</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/server%20principals.txt" style="text-decoration:none;">SCRIPT: Server principals</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/server%20roles%20and%20permissions%20per%20Login.txt" style="text-decoration:none;">SCRIPT: Server roles and permissions per Login</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/security/user%20for%20login%20for%20each%20db.txt" style="text-decoration:none;">SCRIPT: User map for logins for each DB</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- System queries -->
+    <div class="w3-container" style="padding:12px 16px" id="System queries">
+        <h3 class="w3-center">System queries</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/All%20tables%20and%20columns%20in%20DB.txt" style="text-decoration:none;">SCRIPT: All tables and columns in DB</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/all_foreign_keys_including_related_tables.txt" style="text-decoration:none;">SCRIPT: All foreign keys including related tables</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/buffer%20cache%20metrics.txt" style="text-decoration:none;">SCRIPT: Buffer cache metrics</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/change%20tempdb%20files%20path%20and%20name.txt" style="text-decoration:none;">SCRIPT: Change tempdb files path and name</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/Check%20column%20data%20types%20in%20a%20teable.txt" style="text-decoration:none;">SCRIPT: Check column data types in a teable</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/Disk%20Capacity.txt" style="text-decoration:none;">SCRIPT: Disk Capacity</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/Find_Column_in_view.txt" style="text-decoration:none;">SCRIPT: Find column in view</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/List%20all%20databases%20and%20their%20files%20size.txt" style="text-decoration:none;">SCRIPT: List all databases and their files size</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/System%20queries/stats%20update%20date%20by%20table.txt" style="text-decoration:none;">SCRIPT: Statistics update date by table</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Technical examples -->
+    <div class="w3-container" style="padding:12px 16px" id="Technical examples">
+        <h3 class="w3-center">Technical examples</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/archive%20and%20delete%20from%20table/ARCHIVE%20SCRIPT%20JobParamsHistory.txt" style="text-decoration:none;">SCRIPT: ARCHIVE SCRIPT JobParamsHistory</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/Copy%20table%20drom%20one%20db%20to%20another%20db.txt" style="text-decoration:none;">SCRIPT: Copy table drom one db to another db</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/archive%20and%20delete%20from%20table/DELETE%20OLD%20CV%20WebAttachments.txt" style="text-decoration:none;">SCRIPT: DELETE OLD CV WebAttachments</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/IF_EXISTS_with_follow_up_SELECT.txt" style="text-decoration:none;">SCRIPT: IF EXISTS with follow up SELECT</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/Insert_into_table_from_csv_file_aka_import_csv.txt" style="text-decoration:none;">SCRIPT: Insert into table from csv file aka import csv</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/try%20catch%20and%20transaction%20use.txt" style="text-decoration:none;">SCRIPT: Try catch and transaction use</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/use%20CURSOR%20-%20dbcc%20checkdb%20script%20creator.txt" style="text-decoration:none;">SCRIPT: Use CURSOR - dbcc checkdb script creator</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/using%20row_number.txt" style="text-decoration:none;">SCRIPT: Using row_number</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/archive%20and%20delete%20from%20table/WEBATTACHMENTS%20-%20FIRST%20DELETE.txt" style="text-decoration:none;">SCRIPT: WEBATTACHMENTS - FIRST DELETE</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Technical%20examples/WHILE%20EXAMPLE.txt" style="text-decoration:none;">SCRIPT: WHILE Example</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- Info check -->
+    <div class="w3-container" style="padding:12px 16px" id="Info check">
+        <h3 class="w3-center">Info check</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/diagnostics.txt" style="text-decoration:none;">SCRIPT: Diagnostics</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Get%20fragmentation%20info%20for%20the%20tables.txt" style="text-decoration:none;">SCRIPT: Get fragmentation info</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Identifying%20queries%20by%20Wait_type.txt" style="text-decoration:none;">SCRIPT: Identifying queries by Wait type</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/INFO%20check.txt" style="text-decoration:none;">SCRIPT: Info check</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/memory%20check.txt" style="text-decoration:none;">SCRIPT: Memory check</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/objects%20that%20use%20compression.txt" style="text-decoration:none;">SCRIPT: Objects that use compression</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/status%20of%20currently%20waiting%20tasks.txt" style="text-decoration:none;">SCRIPT: status of currently waiting tasks</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20with%20at%20least%20one%20TEXT%20NTEXT%20%20IMAGE%20column.txt" style="text-decoration:none;">SCRIPT: Tables with at least one TEXT NTEXT  IMAGE column</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20with%20at%20least%20two%20triggers.txt" style="text-decoration:none;">SCRIPT: Tables with at least two triggers</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20with%20Identity%20columns.txt" style="text-decoration:none;">SCRIPT: Tables with Identity columns</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20with%20more%20than%205%20indexes.txt" style="text-decoration:none;">SCRIPT: Tables with more than 5 indexes</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20without%20a%20Clustered%20Index%20-%20Heap.txt" style="text-decoration:none;">SCRIPT: Tables without a Clustered Index - Heap</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/Tables%20without%20Primary%20Key.txt" style="text-decoration:none;">SCRIPT: Tables without Primary Key</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/TOP%2050%20IO%20queries%20in%20SQL%20database.txt" style="text-decoration:none;">SCRIPT: TOP 50 IO queries in SQL database</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Info%20check/TOP%20CPU%20queries%20in%20SQL%20database.txt" style="text-decoration:none;">SCRIPT: TOP CPU queries in SQL database</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Job mapping -->
+    <div class="w3-container" style="padding:12px 16px" id="Job info">
+        <h3 class="w3-center">Job info</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/Job%20info/get%20job%20info.txt" style="text-decoration:none;">SCRIPT: Job info</a>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- DB Monitor  -->
+    <div class="w3-container" style="padding:12px 16px" id="DB Monitor">
+        <h3 class="w3-center">DB Monitor</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/IO%20Subsystem%20Delay%20Statistics.txt" style="text-decoration:none;">SCRIPT: IO Subsystem Delay Statistics</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/Kill_Sleeping_Sessions_from_sp_who2.txt" style="text-decoration:none;">SCRIPT: Kill sleeping sessions from sp who2</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/logg%20deadlocks%20to%20sqlserver%20error%20log.txt" style="text-decoration:none;">SCRIPT: Log deadlocks to sqlserver error log</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/Memory%20Metrics.txt" style="text-decoration:none;">SCRIPT: Memory Metrics</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/Recent%20Expensive%20Queries.txt" style="text-decoration:none;">SCRIPT: Recent Expensive Queries</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/sql%20performance%20condition%20using%20query%20wait%20stats.txt" style="text-decoration:none;">SCRIPT: SQL performance condition using query wait stats</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="https://github.com/IvgeniDv/DBA_SQL_SERVER/blob/main/monitor%20db/sysprocesses.txt" style="text-decoration:none;">SCRIPT: sysprocesses</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!--
+
+
+
+    <div class="w3-container" style="padding:12px 16px" id="sample">
+        <h3 class="w3-center">sample</h3>
+
+        <div class="center">
+            <div class="w3-row-padding  w3-margin-bottom " style=" background-color: #becbd2; ">
+                <a href="" style="text-decoration:none;">SCRIPT: sample</a>
+            </div>
+        </div>
+
+
+    </div>
+
+
+       -->
+    <!-- Footer -->
+
+
+
+    <footer class="w3-center w3-black w3-padding-64">
+        <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+
+
+        <script>
+            // Toggle between showing and hiding the sidebar when clicking the menu icon
+            var mySidebar = document.getElementById("mySidebar");
+
+            function w3_open() {
+                if (mySidebar.style.display === 'block') {
+                    mySidebar.style.display = 'none';
+                } else {
+                    mySidebar.style.display = 'block';
+                }
+            }
+
+            // Close the sidebar with the close button
+            function w3_close() {
+                mySidebar.style.display = "none";
+            }
+        </script>
+    </footer>
+</body>
+</html>
