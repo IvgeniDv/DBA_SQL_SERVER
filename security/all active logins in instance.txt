@@ -1,0 +1,28 @@
+SELECT 
+     p.name AS LoginName
+    ,p.type_desc AS LoginType
+	,p.create_date
+	,p.modify_date
+	,CASE 
+		WHEN r.name IS NULL THEN 'public'
+		ELSE  r.name
+	END AS RoleName 
+	,sp.permission_name
+	,sp.state_desc
+FROM 
+    sys.server_principals AS p
+LEFT JOIN 
+    sys.server_role_members AS rm ON p.principal_id = rm.member_principal_id
+LEFT JOIN 
+    sys.server_principals AS r ON rm.role_principal_id = r.principal_id
+LEFT JOIN 
+	sys.server_permissions AS sp ON sp.grantee_principal_id = p.principal_id
+
+WHERE 
+    p.type IN ('S', 'U', 'G') -- 'S' for SQL user, 'U' for Windows user, 'G' for Windows group
+	AND
+	p.is_disabled = 0
+
+
+ORDER BY 
+     r.name;

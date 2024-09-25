@@ -1,0 +1,133 @@
+-- List all logins and their mapped users, including database role membership, securables, and extended properties within a single database
+-- Runs for only one (current) DB
+SELECT
+    sp.name AS LoginName,
+    dp.name AS UserName,
+    dp.type_desc AS UserType,
+
+    CASE	
+		WHEN dr.name IS NULL THEN ''
+		ELSE dr.name
+	END AS RoleName,
+
+    CASE 
+		WHEN obj.name IS NULL THEN ''
+		ELSE obj.name
+	END AS Securable,
+
+
+    dp2.permission_name AS Permission,
+	dp2.state_desc
+
+FROM 
+    sys.server_principals sp
+  JOIN 
+    sys.database_principals dp ON sp.sid = dp.sid
+LEFT JOIN 
+    sys.database_role_members drm ON dp.principal_id = drm.member_principal_id
+LEFT JOIN 
+    sys.database_principals dr ON drm.role_principal_id = dr.principal_id
+LEFT JOIN 
+    sys.database_permissions dp2 ON dp.principal_id = dp2.grantee_principal_id
+LEFT JOIN 
+    sys.objects obj ON dp2.major_id = obj.object_id
+
+WHERE 
+    sp.type IN ('S', 'U', 'G') -- Filter for SQL Server logins, Windows logins, and Windows groups
+ORDER BY 
+    sp.name, dp.name, dr.name, obj.name, dp2.permission_name;
+
+--===============================================================
+
+
+-- List all logins and their mapped users, including database role membership, securables, and extended properties
+-- Runs for all DB's
+
+-- Temp table to store intermediate results
+CREATE TABLE #LoginDetails (
+	DatabaseName NVARCHAR(128),
+    LoginName NVARCHAR(128),
+    UserName NVARCHAR(128),
+    UserType NVARCHAR(128),
+    RoleName NVARCHAR(128),
+    Securable NVARCHAR(128),
+    Permission NVARCHAR(128),
+    state_desc NVARCHAR(128)
+);
+
+-- Iterate through each database
+DECLARE @dbName NVARCHAR(128);
+DECLARE db_cursor CURSOR FOR 
+SELECT name 
+FROM sys.databases
+WHERE state_desc = 'ONLINE' -- Only consider online databases
+
+OPEN db_cursor;
+FETCH NEXT FROM db_cursor INTO @dbName;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    -- Construct dynamic SQL to execute in each database
+    DECLARE @sql NVARCHAR(MAX);
+
+    SET @sql = '
+        USE ' + QUOTENAME(@dbName) + ';
+
+        INSERT INTO #LoginDetails (DatabaseName, LoginName, UserName, UserType, RoleName, Securable, Permission, state_desc)
+
+		SELECT
+			''' + @dbName + ''' AS DatabaseName,
+			sp.name AS LoginName,
+			dp.name AS UserName,
+			dp.type_desc AS UserType,
+
+			CASE	
+				WHEN dr.name IS NULL THEN ''''
+				ELSE dr.name
+			END AS RoleName,
+
+			CASE 
+				WHEN obj.name IS NULL THEN ''''
+				ELSE obj.name
+			END AS Securable,
+
+
+			dp2.permission_name AS Permission,
+			dp2.state_desc
+
+		FROM 
+			sys.server_principals sp
+			JOIN 
+			sys.database_principals dp ON sp.sid = dp.sid
+		LEFT JOIN 
+			sys.database_role_members drm ON dp.principal_id = drm.member_principal_id
+		LEFT JOIN 
+			sys.database_principals dr ON drm.role_principal_id = dr.principal_id
+		LEFT JOIN 
+			sys.database_permissions dp2 ON dp.principal_id = dp2.grantee_principal_id
+		LEFT JOIN 
+			sys.objects obj ON dp2.major_id = obj.object_id
+
+		WHERE 
+			sp.type IN (''S'', ''U'', ''G'') -- Filter for SQL Server logins, Windows logins, and Windows groups
+		ORDER BY 
+			sp.name, dp.name, dr.name, obj.name, dp2.permission_name;
+    ';
+
+    -- Execute dynamic SQL
+    EXEC sp_executesql @sql;
+
+    FETCH NEXT FROM db_cursor INTO @dbName;
+END;
+
+CLOSE db_cursor;
+DEALLOCATE db_cursor;
+
+-- Select results
+SELECT * FROM #LoginDetails;
+
+-- Clean up
+DROP TABLE #LoginDetails;
+
+
+

@@ -1,0 +1,5 @@
+-- run for each  db
+SELECT * FROM sysusers
+where 
+	uid > 4
+and name not in ('db_owner' ,'db_accessadmin' ,'db_securityadmin','db_ddladmin' , 'db_backupoperator' , 'db_datareader' , 'db_datawriter'  ,'db_denydatareader' ,'db_denydatawriter' )
