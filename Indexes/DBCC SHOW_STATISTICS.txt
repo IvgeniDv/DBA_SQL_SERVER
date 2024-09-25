@@ -1,0 +1,2 @@
+DBCC SHOW_STATISTICS('dbo.Table_Name','Statistics_name');
+GO
